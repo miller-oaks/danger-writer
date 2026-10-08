@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { HARDCORE_LEVELS, hardcoreQuery, parseHardcore } from "./hardcore";
+import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
 var classNames = require('classnames');
 
 export default class WriteButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hardcore: this.props.hardcore || false,
+      hardcore: parseHardcore(this.props.hardcore),
+      reveal: readReveal(),
       limit: this.props.limit || 5,
       type: this.props.type || "minutes",
       compact: true,
@@ -16,7 +19,8 @@ export default class WriteButton extends React.Component {
     this.onExpand = this.onExpand.bind(this);
     this.setLimit = this.setLimit.bind(this);
     this.setType = this.setType.bind(this);
-    this.toggleHardcore = this.toggleHardcore.bind(this);
+    this.setHardcore = this.setHardcore.bind(this);
+    this.setReveal = this.setReveal.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
 
@@ -45,7 +49,8 @@ export default class WriteButton extends React.Component {
       limit: this.props.limits[type][1]
     });
   }
-  toggleHardcore(hardcore) { this.setState((prevState, props) => ({ hardcore: !prevState.hardcore })); }
+  setHardcore(hardcore) { this.setState({ hardcore: parseHardcore(hardcore) }); }
+  setReveal(reveal) { this.setState({ reveal: writeReveal(reveal) }); }
 
   renderOptions() {
     const options = this.props.limits[this.state.type];
@@ -73,7 +78,33 @@ export default class WriteButton extends React.Component {
           <div className="radios">
             { this.renderOptions() }
           </div>
-            <div onClick={this.toggleHardcore} className={classNames('hardcore', {checked: this.state.hardcore})}>Hardcore mode</div>
+            <div className="hardcore-levels">
+              <span className="label">Hardcore</span>
+              { HARDCORE_LEVELS.map(({ id, label }) => (
+                <span
+                  key={id}
+                  className={classNames("level", { active: this.state.hardcore === id })}
+                  onClick={() => this.setHardcore(id)}
+                >
+                  {label}
+                </span>
+              )) }
+            </div>
+            <div className="reveal-at-end">
+              <span className="label">Reveal at end</span>
+              <span
+                className={classNames("level", { active: this.state.reveal === REVEAL_AUTOMATIC })}
+                onClick={() => this.setReveal(REVEAL_AUTOMATIC)}
+              >
+                automatically
+              </span>
+              <span
+                className={classNames("level", { active: this.state.reveal === REVEAL_DONE })}
+                onClick={() => this.setReveal(REVEAL_DONE)}
+              >
+                when I press Done
+              </span>
+            </div>
         </div>
       </div>
     )
@@ -92,7 +123,7 @@ export default class WriteButton extends React.Component {
         <Link
           to={{
             pathname: "/write",
-            search: `?limit=${limit}&type=${type}` + (hardcore ? '&hardcore=true' : '')
+            search: `?limit=${limit}&type=${type}` + hardcoreQuery(hardcore)
           }}
           className={buttonClasses}
           onMouseOver={this.showPanel}
