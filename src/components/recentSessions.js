@@ -22,9 +22,16 @@ export function sessionSearch(setup) {
   return base + hardcoreQuery(item.hardcore);
 }
 
+function lengthLabel(item) {
+  if (item.type === "none") return "No limit";
+  if (item.type === "words") return `${item.limit} ${item.limit === 1 ? "word" : "words"}`;
+  if (item.type === "minutes") return `${item.limit} ${item.limit === 1 ? "minute" : "minutes"}`;
+  return `${item.limit} ${item.type}`;
+}
+
 export function sessionLabel(setup) {
   const item = normalizeSetup(setup);
-  const length = item.type === "none" ? "No limit" : `${item.limit} ${item.type}`;
+  const length = lengthLabel(item);
   if (item.hardcore === "letter") return `${length} · Letter`;
   if (item.hardcore === "word") return `${length} · Word`;
   return length;

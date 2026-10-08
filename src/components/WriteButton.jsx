@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { readNoDelete, writeNoDelete } from "./noDelete";
+import { readKeepLine, writeKeepLine } from "./keepLine";
 import { HARDCORE_LEVELS, hardcoreQuery, parseHardcore } from "./hardcore";
 import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
 import QuickStarts from "./QuickStarts";
@@ -14,7 +16,9 @@ export default class WriteButton extends React.Component {
       limit: this.props.limit || 5,
       type: this.props.type || "minutes",
       compact: true,
-      hidePanel: this.props.hidePanel
+      hidePanel: this.props.hidePanel,
+      keepLine: readKeepLine(),
+      noDelete: readNoDelete(),
     };
 
     this.onExpand = this.onExpand.bind(this);
@@ -22,6 +26,8 @@ export default class WriteButton extends React.Component {
     this.setType = this.setType.bind(this);
     this.setHardcore = this.setHardcore.bind(this);
     this.setReveal = this.setReveal.bind(this);
+    this.toggleKeepLine = this.toggleKeepLine.bind(this);
+    this.toggleNoDelete = this.toggleNoDelete.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
 
@@ -57,6 +63,14 @@ export default class WriteButton extends React.Component {
   }
   setHardcore(hardcore) { this.setState({ hardcore: parseHardcore(hardcore) }); }
   setReveal(reveal) { this.setState({ reveal: writeReveal(reveal) }); }
+  toggleKeepLine() {
+    const keepLine = writeKeepLine(!this.state.keepLine);
+    this.setState({ keepLine });
+  }
+  toggleNoDelete() {
+    const noDelete = writeNoDelete(!this.state.noDelete);
+    this.setState({ noDelete });
+  }
 
   renderOptions() {
     const options = this.props.limits[this.state.type];
@@ -115,6 +129,8 @@ export default class WriteButton extends React.Component {
                 when I press Done
               </span>
             </div>
+            <div onClick={this.toggleKeepLine} className={classNames('hardcore', {checked: this.state.keepLine})}>Keep current line at top</div>
+            <div onClick={this.toggleNoDelete} className={classNames('hardcore', {checked: this.state.noDelete})}>No deleting</div>
         </div>
       </div>
     )
@@ -127,20 +143,34 @@ export default class WriteButton extends React.Component {
       ghost: this.props.ghost
     })
     const {limit, type, hardcore} = this.state;
+    const startContinuing = () => {
+      this.props.onStart({ limit, type, hardcore });
+    };
     return (
       <div className={wrapperWlasses}>
         { !this.props.noPanel && !this.state.hidePanel && (this.state.compact ? this.renderCompactChooser() : this.renderFullChooser()) }
-        <Link
-          to={{
-            pathname: "/write",
-            search: (type === "none" ? "?type=none" : `?limit=${limit}&type=${type}`) + hardcoreQuery(hardcore)
-          }}
-          className={buttonClasses}
-          onMouseOver={this.showPanel}
-        >
-          { this.props.label }
-        </Link>
-        {!this.props.small && this.props.label === "Start Writing" && <QuickStarts />}
+        { this.props.onStart ? (
+          <button
+            type="button"
+            className={buttonClasses}
+            onMouseOver={this.showPanel}
+            onClick={startContinuing}
+          >
+            { this.props.label }
+          </button>
+        ) : (
+          <Link
+            to={{
+              pathname: "/write",
+              search: (type === "none" ? "?type=none" : `?limit=${limit}&type=${type}`) + hardcoreQuery(hardcore)
+            }}
+            className={buttonClasses}
+            onMouseOver={this.showPanel}
+          >
+            { this.props.label }
+          </Link>
+        )}
+        {!this.props.onStart && !this.props.small && this.props.label === "Start Writing" && <QuickStarts />}
       </div>
     )
   }
