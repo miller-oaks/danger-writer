@@ -15,7 +15,7 @@ const TweetButton = ({ words }) => {
   );
 };
 
-const Failure = ({ limit, type, lost, words }) => {
+const Failure = ({ limit, type, hardcore, lost, words }) => {
   return (
     <TransitionGroup>
       {lost && (
@@ -35,6 +35,7 @@ const Failure = ({ limit, type, lost, words }) => {
             Again."
                 type={type}
                 limit={limit}
+                hardcore={hardcore}
               />
             </div>
           </div>

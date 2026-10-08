@@ -63,4 +63,65 @@ body.night-mode .icon-night-mode
     border-radius: calc(1vw + 1vh);
 }
 
+button.done-reveal {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%);
+    z-index: 1200;
+    margin: 0;
+    padding: 22px 64px;
+    background: $red;
+    color: $white;
+    border: none;
+    border-radius: 100px;
+    font-family: Lato, sans-serif;
+    font-size: $reg;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(26, 32, 38, 0.28);
+}
+
+button.done-reveal:hover {
+    background: $red;
+    color: $white;
+}
+
+.wipe-confirm {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 32, 38, 0.45);
+    text-align: center;
+
+    .panel {
+        background: $white;
+        color: $grey;
+        max-width: 440px;
+        margin: 24px;
+        padding: 28px 32px;
+        border-radius: 4px;
+    }
+
+    p {
+        margin: 0 0 20px;
+        font-family: Lato, sans-serif;
+        line-height: 1.4;
+    }
+
+    button { margin: 0 8px; }
+    button:focus {
+        outline: 2px solid $red;
+        outline-offset: 3px;
+    }
+}
+
+.app.night-mode .wipe-confirm .panel {
+    background: $dark;
+    color: $off-white;
+}
+
 
