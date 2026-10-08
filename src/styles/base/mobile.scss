@@ -44,11 +44,10 @@
     .write_button_wrap.small .session_chooser { bottom: 28px; }
     .tweet {margin: 30px 20px 0 70px;}
     .tweet:after {font-size: $xxlarge;}
-    .Welcome .accolades
+    .Welcome .forkCredit
         {
-        background-size: calc(100% - 40px);
-        left: 0px;
-        bottom: 0;
+        bottom: 12px;
+        padding: 0 16px;
         }
 
     #input-wrap

@@ -24,13 +24,27 @@
         }
     }
 
-    .accolades {
-        height: 53px;
-        background: url(/images/accolades.png) center center no-repeat transparent;
-        background-size: 50%;
+    .forkCredit {
         position: absolute;
-        bottom: 40px;
-        width: 100%;
+        bottom: 28px;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0 24px;
+        text-align: center;
+        font-family: Lato, sans-serif;
+        font-size: $xsmall;
+        font-weight: 400;
+        line-height: 1.4;
+        color: $light-grey;
+
+        a {
+            color: inherit;
+
+            &:hover {
+                color: $grey;
+            }
+        }
     }
 
     .helpButton {
