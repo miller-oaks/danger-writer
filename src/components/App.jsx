@@ -4,7 +4,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import Progress from "./Progress";
 import WordCount from "./WordCount";
-import WriteButton from "./WriteButton";
+import SessionEnd from "./SessionEnd";
 import Failure from "./Failure";
 import Download from "./Download";
 import CopyButton from "./CopyButton";
@@ -29,6 +29,8 @@ class WritingApp extends React.Component {
     this.handleStroke = this.handleStroke.bind(this);
     this.fullscreenHandler = fullscreenHandler;
     this.reset = this.reset.bind(this);
+    this.newSession = this.newSession.bind(this);
+    this.continueSession = this.continueSession.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleNightMode = this.toggleNightMode.bind(this);
     this.now = this.now.bind(this);
@@ -133,6 +135,33 @@ class WritingApp extends React.Component {
     this.editor.current && this.editor.current.reset();
   }
 
+  newSession() {
+    const { type, limit, hardcore } = this.state;
+    this.reset(type, limit, hardcore);
+  }
+
+  continueSession({ type, limit, hardcore }) {
+    const text =
+      (this.editor.current && this.editor.current.state.text) ||
+      this.state.text ||
+      "";
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    this.setState({
+      type,
+      limit,
+      hardcore,
+      won: false,
+      lost: false,
+      run: false,
+      startTime: null,
+      progress: 0,
+      timeSinceStroke: 0,
+      danger: false,
+      words,
+      text,
+    });
+  }
+
   tick() {
     const { run, words, timeSinceStroke, startTime, fade, type, limit, kill } =
       this.state;
@@ -186,12 +215,13 @@ class WritingApp extends React.Component {
                   onFullScreen={this.toggleFullscreen}
                 />
                 {won ? (
-                  <WriteButton
-                    small
-                    ghost
-                    hidePanel
-                    label="Start Again"
-                    {...{ limit, type, hardcore }}
+                  <SessionEnd
+                    text={text}
+                    limit={limit}
+                    type={type}
+                    hardcore={hardcore}
+                    onNewSession={this.newSession}
+                    onContinue={this.continueSession}
                   />
                 ) : (
                   <WordCount />
