@@ -30,11 +30,12 @@ export default class WriteButton extends React.Component {
 
   renderCompactChooser() {
     const {limit, type} = this.state;
+    const lengthLabel = type === "none" ? "No limit" : `${limit} ${type}`;
     return (
       <div className="session-chooser">
         <div className="compact"  onClick={ this.onExpand }>
           Session length:
-          <span className="choice">{limit} {type} <i className="edit icon-pencil"></i></span>
+          <span className="choice">{lengthLabel} <i className="edit icon-pencil"></i></span>
 
         </div>
       </div>
@@ -44,6 +45,10 @@ export default class WriteButton extends React.Component {
   showPanel() { this.setState({hidePanel: false}); }
   setLimit(limit) { this.setState({limit}); }
   setType(type) {
+    if (type === "none") {
+      this.setState({ type: "none" });
+      return;
+    }
     this.setState({
       type: type,
       limit: this.props.limits[type][1]
@@ -74,10 +79,14 @@ export default class WriteButton extends React.Component {
               <span className="minutes" onClick={() => this.setType("minutes")}>Minutes</span>
               &nbsp;/&nbsp;
               <span className="words" onClick={() => this.setType("words")}>Words</span>
+              &nbsp;/&nbsp;
+              <span className="none" onClick={() => this.setType("none")}>No limit</span>
           </div>
-          <div className="radios">
-            { this.renderOptions() }
-          </div>
+          { this.state.type !== "none" && (
+            <div className="radios">
+              { this.renderOptions() }
+            </div>
+          )}
             <div className="hardcore-levels">
               <span className="label">Hardcore</span>
               { HARDCORE_LEVELS.map(({ id, label }) => (
@@ -136,7 +145,7 @@ export default class WriteButton extends React.Component {
           <Link
             to={{
               pathname: "/write",
-              search: `?limit=${limit}&type=${type}` + hardcoreQuery(hardcore)
+              search: (type === "none" ? "?type=none" : `?limit=${limit}&type=${type}`) + hardcoreQuery(hardcore)
             }}
             className={buttonClasses}
             onMouseOver={this.showPanel}

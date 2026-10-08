@@ -81,6 +81,7 @@
         {
         &.minutes .tabs span.minutes {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
         &.words .tabs span.words {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
+        &.none .tabs span.none {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
         box-shadow: 0px 2px 5px 1px rgba(0,0,0,.1);
         .tabs
             {
