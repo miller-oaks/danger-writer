@@ -11,7 +11,7 @@ export default function Mark() {
         strokeLinejoin="round"
         d="M32 13.6 52.4 52.4H11.6Z"
       />
-      <path fill="#FFFEFA" d="M35.4 20.4 26.2 34.8h6.3L29 48.4 42 31.2h-6.6l3.4-10.8z" />
+      <path fill="#FFFEFA" d="M31.3 25.2 23.5 37.4h5.3L25.8 48.9 36.8 34.3h-5.5l2.8-9.1z" />
     </svg>
   );
 }
