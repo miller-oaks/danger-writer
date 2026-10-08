@@ -1,3 +1,9 @@
+body.night-mode .Help {
+    h1, h2, p { color: $off-white; }
+    blockquote i.icon-quote-right,
+    blockquote i.icon-quote-left { color: $light-grey; }
+}
+
 .Help {
     @keyframes PulseCaret
         {
