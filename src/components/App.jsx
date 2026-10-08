@@ -10,6 +10,7 @@ import Download from "./Download";
 import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
+import { readKeepLine } from "./keepLine";
 import { isHardcore, parseHardcore } from "./hardcore";
 import { REVEAL_DONE, readReveal } from "./reveal";
 import { NightModeContext } from "./NightMode";
@@ -56,6 +57,7 @@ class WritingApp extends React.Component {
       hardcore: parseHardcore(hardcore),
       reveal: readReveal(),
       revealed: false,
+      keepLine: readKeepLine(),
     };
   }
 
@@ -206,7 +208,7 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed, keepLine } =
       this.state;
     const { nightMode } = this.context;
     const noLimit = type === "none";
@@ -241,6 +243,7 @@ class WritingApp extends React.Component {
                   onStroke={this.handleStroke}
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
+                  keepLine={keepLine}
                 />
                 {waitingForDone && (
                   <button
