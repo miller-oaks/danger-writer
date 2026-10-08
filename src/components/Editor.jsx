@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import {AppContext} from './AppContext';
+import { currentWord, isHardcore, parseHardcore } from './hardcore';
+import { REVEAL_DONE } from './reveal';
 
 export default class Editor extends Component {
   constructor(props) {
@@ -156,17 +158,26 @@ export default class Editor extends Component {
 
   render() {
     return (
-      <AppContext.Consumer>{ ({danger, hardcore, won}) =>
+      <AppContext.Consumer>{ ({danger, hardcore, won, reveal, revealed}) => {
+        const level = parseHardcore(hardcore);
+        const holdBlur = isHardcore(level) && won && reveal === REVEAL_DONE && !revealed;
+        const active = (isHardcore(level) && !won) || holdBlur;
+        const shown = level === "word" ? currentWord(this.state.text) : this.state.letter;
+        return (
         <div
           className={classNames('editor', {
             danger,
-            hardcore: hardcore && !won,
+            hardcore: active,
             'cut-top': this.state.cutTop,
             'cut-bottom': this.state.cutBottom,
           })}
          ref={this.wrapper}
         >
-          {hardcore && <div className="hardcore" >{this.state.letter}</div> }
+          {isHardcore(level) && !won && (
+            <div className={classNames("hardcore", { word: level === "word" })}>
+              {shown}
+            </div>
+          )}
           <textarea
             placeholder="Start typing..."
             spellCheck="false"
@@ -177,7 +188,8 @@ export default class Editor extends Component {
             value={this.state.text}
           ></textarea>
         </div>
-      }</AppContext.Consumer>
+        );
+      }}</AppContext.Consumer>
     )
   }
 }

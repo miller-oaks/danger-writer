@@ -4,6 +4,12 @@ body
     font-weight: 400;
     color: $grey;
     background: $white;
+
+    &.night-mode
+        {
+        background: $dark;
+        color: $off-white;
+        }
     }
 
 .space, .space.m { height: 40px; }
