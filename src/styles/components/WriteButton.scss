@@ -7,6 +7,10 @@
     justify-content: center;
     align-items: center;
     &.small .session-chooser {bottom: 35px;}
+    &.session-actions {
+      gap: 16px;
+      button.small { margin: 0; }
+    }
   }
 
 .writeButton a, button
@@ -77,6 +81,7 @@
         {
         &.minutes .tabs span.minutes {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
         &.words .tabs span.words {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
+        &.none .tabs span.none {color: $white; -webkit-font-smoothing: subpixel-antialiased;}
         box-shadow: 0px 2px 5px 1px rgba(0,0,0,.1);
         .tabs
             {
@@ -93,6 +98,54 @@
 
     input[type=checkbox] {
     }
+
+    .hardcore-levels
+        {
+        margin: 15px 0 5px;
+        .label { margin-right: 6px; }
+        .level
+            {
+            cursor: pointer;
+            opacity: .55;
+            display: inline-block;
+            min-width: 26px;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 8px;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            }
+        .level.active
+            {
+            opacity: 1;
+            color: $white;
+            border-color: $white;
+            }
+        }
+
+    .reveal-at-end
+        {
+        margin: 4px 8px 8px;
+        .label { display: block; margin-bottom: 4px; }
+        .level
+            {
+            cursor: pointer;
+            opacity: .55;
+            display: inline-block;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 8px;
+            margin: 2px 2px 0 0;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            }
+        .level.active
+            {
+            opacity: 1;
+            color: $white;
+            border-color: $white;
+            }
+        }
 
     .hardcore
         {

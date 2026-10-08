@@ -2,6 +2,8 @@ import React from "react";
 import WriteButton from "./WriteButton";
 import Space from "./Space";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
+import { NightModeContext, NightModeToggle } from "./NightMode";
 
 const renderQuote = ({ text, author, url }) => {
   return (
@@ -19,6 +21,7 @@ const renderQuote = ({ text, author, url }) => {
 };
 
 export default class Help extends React.Component {
+  static contextType = NightModeContext;
   static quotes = [
     {
       text: "Sadistic [and] brutal.",
@@ -46,7 +49,8 @@ export default class Help extends React.Component {
 
   render() {
     return (
-      <div className="Help">
+      <div className={classNames("Help", { "night-mode": this.context.nightMode })}>
+        <NightModeToggle />
         <Link to="/" className="navButton backButton">
           Back
         </Link>
