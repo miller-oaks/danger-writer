@@ -23,7 +23,7 @@ export default class Help extends React.Component {
             <h1>
               <span>Danger</span>
               <span>
-                Writing
+                Writer
                 <i className="caret icon-cursor" />
               </span>
             </h1>
@@ -32,7 +32,7 @@ export default class Help extends React.Component {
           <h1>Help</h1>
           <h2>What's the point?</h2>
           <p>
-            Danger Writing is designed to shut down your inner
+            Danger Writer is designed to shut down your inner
             editor and get you into a state of flow. If you stop typing for more
             than five seconds, all progress will be lost. After typing without
             interruption for the length of your session, you'll be able to save

@@ -6,8 +6,8 @@ import WriteButton from "./WriteButton";
 import { withAppContext } from "./AppContext";
 
 const TweetButton = ({ words }) => {
-  const href = `https://twitter.com/intent/tweet?text=I+wrote+${words}+words+using+Danger+Writing+-+until+it+deleted+everything.&url=https%3A%2F%2Futil.chad.ml%2Fwrite%2F`;
-  const label = `I wrote ${words} words using Danger Writing - until it deleted everything.`;
+  const href = `https://twitter.com/intent/tweet?text=I+wrote+${words}+words+using+Danger+Writer+-+until+it+deleted+everything.&url=https%3A%2F%2Futil.chad.ml%2Fwrite%2F`;
+  const label = `I wrote ${words} words using Danger Writer - until it deleted everything.`;
   return (
     <a className="tweet" href={href}>
       {label}
