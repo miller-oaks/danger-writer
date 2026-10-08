@@ -9,6 +9,7 @@ import Failure from "./Failure";
 import Download from "./Download";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
+import { readNoDelete } from "./noDelete";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -48,6 +49,7 @@ class WritingApp extends React.Component {
       limit: limit,
       type: type,
       hardcore: hardcore,
+      noDelete: readNoDelete(),
     };
   }
 
@@ -155,7 +157,7 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration } =
+    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration, noDelete } =
       this.state;
     const appClass = classNames("app", {
       "night-mode": nightMode,
@@ -183,6 +185,7 @@ class WritingApp extends React.Component {
                   onStroke={this.handleStroke}
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
+                  noDelete={noDelete}
                 />
                 {won ? (
                   <WriteButton

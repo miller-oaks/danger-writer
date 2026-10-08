@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { readNoDelete, writeNoDelete } from "./noDelete";
 var classNames = require('classnames');
 
 export default class WriteButton extends React.Component {
@@ -10,13 +11,15 @@ export default class WriteButton extends React.Component {
       limit: this.props.limit || 5,
       type: this.props.type || "minutes",
       compact: true,
-      hidePanel: this.props.hidePanel
+      hidePanel: this.props.hidePanel,
+      noDelete: readNoDelete(),
     };
 
     this.onExpand = this.onExpand.bind(this);
     this.setLimit = this.setLimit.bind(this);
     this.setType = this.setType.bind(this);
     this.toggleHardcore = this.toggleHardcore.bind(this);
+    this.toggleNoDelete = this.toggleNoDelete.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
 
@@ -46,6 +49,10 @@ export default class WriteButton extends React.Component {
     });
   }
   toggleHardcore(hardcore) { this.setState((prevState, props) => ({ hardcore: !prevState.hardcore })); }
+  toggleNoDelete() {
+    const noDelete = writeNoDelete(!this.state.noDelete);
+    this.setState({ noDelete });
+  }
 
   renderOptions() {
     const options = this.props.limits[this.state.type];
@@ -74,6 +81,7 @@ export default class WriteButton extends React.Component {
             { this.renderOptions() }
           </div>
             <div onClick={this.toggleHardcore} className={classNames('hardcore', {checked: this.state.hardcore})}>Hardcore mode</div>
+            <div onClick={this.toggleNoDelete} className={classNames('hardcore', {checked: this.state.noDelete})}>No deleting</div>
         </div>
       </div>
     )
