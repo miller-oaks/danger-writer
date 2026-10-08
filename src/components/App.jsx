@@ -10,6 +10,7 @@ import Download from "./Download";
 import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
+import { readNoDelete } from "./noDelete";
 import { readKeepLine } from "./keepLine";
 import { isHardcore, parseHardcore } from "./hardcore";
 import { REVEAL_DONE, readReveal } from "./reveal";
@@ -58,6 +59,7 @@ class WritingApp extends React.Component {
       reveal: readReveal(),
       revealed: false,
       keepLine: readKeepLine(),
+      noDelete: readNoDelete(),
     };
   }
 
@@ -208,7 +210,7 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed, keepLine } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed, keepLine, noDelete } =
       this.state;
     const { nightMode } = this.context;
     const noLimit = type === "none";
@@ -244,6 +246,7 @@ class WritingApp extends React.Component {
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
                   keepLine={keepLine}
+                  noDelete={noDelete}
                 />
                 {waitingForDone && (
                   <button
