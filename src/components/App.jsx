@@ -10,6 +10,7 @@ import Download from "./Download";
 import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
+import { parseHardcore } from "./hardcore";
 import { NightModeContext } from "./NightMode";
 
 const withFullscreenHook = (Component) => {
@@ -49,7 +50,7 @@ class WritingApp extends React.Component {
       kill: 5,
       limit: limit,
       type: type,
-      hardcore: hardcore,
+      hardcore: parseHardcore(hardcore),
     };
   }
 
@@ -122,7 +123,7 @@ class WritingApp extends React.Component {
     this.setState({
       type,
       limit,
-      hardcore,
+      hardcore: parseHardcore(hardcore),
       won: false,
       lost: false,
       run: false,
@@ -149,7 +150,7 @@ class WritingApp extends React.Component {
     this.setState({
       type,
       limit,
-      hardcore,
+      hardcore: parseHardcore(hardcore),
       won: false,
       lost: false,
       run: false,
