@@ -4,6 +4,7 @@ import { readNoDelete, writeNoDelete } from "./noDelete";
 import { readKeepLine, writeKeepLine } from "./keepLine";
 import { HARDCORE_LEVELS, hardcoreQuery, parseHardcore } from "./hardcore";
 import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
+import QuickStarts from "./QuickStarts";
 var classNames = require('classnames');
 
 export default class WriteButton extends React.Component {
@@ -169,6 +170,7 @@ export default class WriteButton extends React.Component {
             { this.props.label }
           </Link>
         )}
+        {!this.props.onStart && !this.props.small && this.props.label === "Start Writing" && <QuickStarts />}
       </div>
     )
   }
