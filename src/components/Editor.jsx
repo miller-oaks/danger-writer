@@ -153,7 +153,7 @@ export default class Editor extends Component {
           })}
          ref={this.wrapper}
         >
-          {hardcoreOn && !won && (
+          {hardcoreOn && (!won || holdBlur) && (
             <div className="hardcore word">
               {shown}
             </div>

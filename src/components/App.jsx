@@ -218,9 +218,13 @@ class WritingApp extends React.Component {
       this.state;
     const { nightMode } = this.context;
     const noLimit = type === "none";
-    const waitingForDone =
-      (noLimit && !won) ||
-      (won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed);
+    const hardcoreOn = isHardcore(hardcore);
+    const blurHeld = hardcoreOn && won && reveal === REVEAL_DONE && !revealed;
+    const showReveal = hardcoreOn && ((noLimit && !won) || blurHeld);
+    // A timed session ends on its own. A No-limit session does not, so without
+    // Hardcore the same red button is the only way to finish, and it stays "Done".
+    const showFinish = !hardcoreOn && noLimit && !won;
+    const waitingForDone = showReveal || showFinish;
     const appClass = classNames("app", {
       "night-mode": nightMode,
       "no-limit": noLimit && !won,
@@ -257,7 +261,7 @@ class WritingApp extends React.Component {
                     className="done-reveal"
                     onClick={noLimit && !won ? this.finishNoLimit : this.revealText}
                   >
-                    Done
+                    {showReveal ? "Reveal" : "Done"}
                   </button>
                 )}
                 {won && !waitingForDone ? (
