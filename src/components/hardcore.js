@@ -1,41 +1,30 @@
-export const HARDCORE_LEVELS = [
-  { id: "off", label: "Off" },
-  { id: "letter", label: "Letter" },
-  { id: "word", label: "Word" },
-];
-
-// Upstream default. personalize may change this one constant.
-export const DEFAULT_HARDCORE = "off";
+// Hardcore is one on/off switch. On means the whole current word stays visible
+// and everything else is blurred. Letter mode is gone.
+//
+// Missing, empty, and the old three-way values ("word", "letter") are off.
+// Only an explicit true / "true" / "1" / "on" turns it on, so a saved
+// three-way choice cannot force Hardcore back on. hardcore=true is the
+// on value in the URL.
 
 export function parseHardcore(value) {
-  if (value === true) return "letter";
-  if (value === false) return "off";
-  if (value == null || value === "") return DEFAULT_HARDCORE;
+  if (value === true) return true;
+  if (value === false || value == null || value === "") return false;
   switch (String(value).toLowerCase()) {
-    case "word":
-      return "word";
     case "true":
     case "1":
-    case "letter":
-      return "letter";
-    case "false":
-    case "0":
-    case "off":
-      return "off";
+    case "on":
+      return true;
     default:
-      return DEFAULT_HARDCORE;
+      return false;
   }
 }
 
 export function isHardcore(level) {
-  return level === "letter" || level === "word" || level === true;
+  return parseHardcore(level);
 }
 
 export function hardcoreQuery(level) {
-  const parsed = parseHardcore(level);
-  if (parsed === "word") return "&hardcore=word";
-  if (parsed === "letter") return "&hardcore=true";
-  return "";
+  return isHardcore(level) ? "&hardcore=true" : "";
 }
 
 export function currentWord(text) {

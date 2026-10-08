@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import {AppContext} from './AppContext';
-import { currentWord, isHardcore, parseHardcore } from './hardcore';
+import { currentWord, isHardcore } from './hardcore';
 import { REVEAL_DONE } from './reveal';
 
 export default class Editor extends Component {
@@ -89,10 +89,10 @@ export default class Editor extends Component {
   render() {
     return (
       <AppContext.Consumer>{ ({danger, hardcore, won, reveal, revealed}) => {
-        const level = parseHardcore(hardcore);
-        const holdBlur = isHardcore(level) && won && reveal === REVEAL_DONE && !revealed;
-        const active = (isHardcore(level) && !won) || holdBlur;
-        const shown = level === "word" ? currentWord(this.state.text) : this.state.letter;
+        const hardcoreOn = isHardcore(hardcore);
+        const holdBlur = hardcoreOn && won && reveal === REVEAL_DONE && !revealed;
+        const active = (hardcoreOn && !won) || holdBlur;
+        const shown = currentWord(this.state.text);
         return (
         <div
           className={classNames('editor', {
@@ -103,8 +103,8 @@ export default class Editor extends Component {
           })}
          ref={this.wrapper}
         >
-          {isHardcore(level) && !won && (
-            <div className={classNames("hardcore", { word: level === "word" })}>
+          {hardcoreOn && !won && (
+            <div className="hardcore word">
               {shown}
             </div>
           )}
