@@ -9,6 +9,8 @@
 
 @media (max-width: 680px) {
     .buttons i.icon-fullscreen { display: none; }
+    .buttons { max-width: calc(100% - 140px); text-align: right; }
+    .failure .navButton.helpButton { left: 108px; }
     html { font-size: .75em; }
     body.home, body.write { overflow: auto; }
     .logo
@@ -75,6 +77,7 @@
         margin: 0px auto;
         }
     .Welcome, .content { padding: 0px 20px; box-sizing: border-box;}
+    .Welcome .dock-tip { margin-left: 0; margin-right: 0; max-width: none; }
     .editor, .app.night-mode .editor {margin-top: 50px;}
     #hardcore { font-size: 200pt;}
 }

@@ -151,30 +151,6 @@
             }
         }
 
-    .reveal-at-end
-        {
-        margin: 4px 8px 8px;
-        .label { display: block; margin-bottom: 4px; }
-        .level
-            {
-            cursor: pointer;
-            opacity: .55;
-            display: inline-block;
-            height: 26px;
-            line-height: 26px;
-            padding: 0 8px;
-            margin: 2px 2px 0 0;
-            border: 1px solid transparent;
-            border-radius: 2px;
-            }
-        .level.active
-            {
-            opacity: 1;
-            color: $white;
-            border-color: $white;
-            }
-        }
-
     .hardcore
         {
         cursor: pointer;
@@ -191,6 +167,12 @@
             display: inline-block;
             }
         &.checked { color: $white;}
+        &.disabled
+            {
+            opacity: .35;
+            cursor: default;
+            pointer-events: none;
+            }
         &.checked:before
             {
             border-color: $white;

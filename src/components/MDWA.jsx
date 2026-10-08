@@ -64,6 +64,14 @@ const router = createHashRouter([
 ]);
 
 export default class MDWA extends Component {
+  componentDidMount() {
+    try {
+      window.localStorage.removeItem(["mdwa.keep", "line-at-top"].join("-"));
+    } catch (err) {
+      // Private mode can throw. There is nothing left to clean up.
+    }
+  }
+
   render() {
     return (
       <NightModeProvider>

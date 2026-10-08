@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { readKeepLine, writeKeepLine } from "./keepLine";
 import { readNoDelete, writeNoDelete } from "./noDelete";
 import { hardcoreQuery, parseHardcore } from "./hardcore";
 import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
@@ -17,7 +16,6 @@ export default class WriteButton extends React.Component {
       type: this.props.type || "minutes",
       compact: true,
       hidePanel: this.props.hidePanel,
-      keepLine: readKeepLine(),
       noDelete: readNoDelete(),
     };
 
@@ -25,8 +23,7 @@ export default class WriteButton extends React.Component {
     this.setLimit = this.setLimit.bind(this);
     this.setType = this.setType.bind(this);
     this.toggleHardcore = this.toggleHardcore.bind(this);
-    this.setReveal = this.setReveal.bind(this);
-    this.toggleKeepLine = this.toggleKeepLine.bind(this);
+    this.toggleReveal = this.toggleReveal.bind(this);
     this.toggleNoDelete = this.toggleNoDelete.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
@@ -64,10 +61,10 @@ export default class WriteButton extends React.Component {
   toggleHardcore() {
     this.setState((prev) => ({ hardcore: !parseHardcore(prev.hardcore) }));
   }
-  setReveal(reveal) { this.setState({ reveal: writeReveal(reveal) }); }
-  toggleKeepLine() {
-    const keepLine = writeKeepLine(!this.state.keepLine);
-    this.setState({ keepLine });
+  toggleReveal() {
+    if (!parseHardcore(this.state.hardcore)) return;
+    const next = this.state.reveal === REVEAL_AUTOMATIC ? REVEAL_DONE : REVEAL_AUTOMATIC;
+    this.setState({ reveal: writeReveal(next) });
   }
   toggleNoDelete() {
     const noDelete = writeNoDelete(!this.state.noDelete);
@@ -105,22 +102,18 @@ export default class WriteButton extends React.Component {
             </div>
           )}
             <div onClick={this.toggleHardcore} className={classNames("hardcore", { checked: this.state.hardcore })}>Hardcore mode</div>
-            <div className="reveal-at-end">
-              <span className="label">Reveal at end</span>
-              <span
-                className={classNames("level", { active: this.state.reveal === REVEAL_AUTOMATIC })}
-                onClick={() => this.setReveal(REVEAL_AUTOMATIC)}
-              >
-                automatically
-              </span>
-              <span
-                className={classNames("level", { active: this.state.reveal === REVEAL_DONE })}
-                onClick={() => this.setReveal(REVEAL_DONE)}
-              >
-                when I press Done
-              </span>
+            <div
+              onClick={parseHardcore(this.state.hardcore) ? this.toggleReveal : undefined}
+              className={classNames("hardcore", {
+                checked: this.state.reveal === REVEAL_AUTOMATIC,
+                disabled: !parseHardcore(this.state.hardcore),
+              })}
+              role="checkbox"
+              aria-checked={this.state.reveal === REVEAL_AUTOMATIC}
+              aria-disabled={!parseHardcore(this.state.hardcore)}
+            >
+              Reveal at end
             </div>
-            <div onClick={this.toggleKeepLine} className={classNames('hardcore', {checked: this.state.keepLine})}>Keep current line at top</div>
             <div onClick={this.toggleNoDelete} className={classNames('hardcore', {checked: this.state.noDelete})}>No deleting</div>
         </div>
       </div>
