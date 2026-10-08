@@ -114,7 +114,10 @@ export default class Editor extends Component {
   }
 
   onChange(event) {
-    this.setState({text: event.target.value});
+    const next = event.target.value;
+    this.setState({text: next});
+    // keydown reports the value from before this character landed.
+    this.props.onStroke("", next);
   }
 
   onStroke(event) {
