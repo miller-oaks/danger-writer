@@ -11,10 +11,13 @@ const Welcome = () => {
   const { nightMode } = useNightMode();
   return (
     <div className={classNames("Welcome", { "night-mode": nightMode })}>
-      <NightModeToggle />
-      <Link to="/help" className="navButton helpButton">
-        Help
-      </Link>
+      <div className="welcome-bar">
+        <Link to="/help" className="navButton helpButton">
+          Help
+        </Link>
+        <DockTip />
+        <NightModeToggle />
+      </div>
       <Space xl />
       <div>
         <div className="logo">
@@ -31,7 +34,6 @@ const Welcome = () => {
         </h2>
         <Space xl />
         <WriteButton ghost color="red" />
-        <DockTip />
       </div>
       <p className="forkCredit">
         This is a{" "}
