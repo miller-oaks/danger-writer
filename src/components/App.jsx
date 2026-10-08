@@ -9,7 +9,8 @@ import Failure from "./Failure";
 import Download from "./Download";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
-import { parseHardcore } from "./hardcore";
+import { isHardcore, parseHardcore } from "./hardcore";
+import { REVEAL_DONE, readReveal } from "./reveal";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -28,6 +29,7 @@ class WritingApp extends React.Component {
     this.reset = this.reset.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleNightMode = this.toggleNightMode.bind(this);
+    this.revealText = this.revealText.bind(this);
     this.now = this.now.bind(this);
     this.editor = React.createRef();
 
@@ -49,6 +51,8 @@ class WritingApp extends React.Component {
       limit: limit,
       type: type,
       hardcore: parseHardcore(hardcore),
+      reveal: readReveal(),
+      revealed: false,
     };
   }
 
@@ -98,6 +102,10 @@ class WritingApp extends React.Component {
     return new Date().getTime() / 1000;
   }
 
+  revealText() {
+    this.setState({ revealed: true });
+  }
+
   win() {
     this.stopWriting();
     this.setState({
@@ -116,6 +124,8 @@ class WritingApp extends React.Component {
       type,
       limit,
       hardcore: parseHardcore(hardcore),
+      reveal: readReveal(),
+      revealed: false,
       won: false,
       lost: false,
       run: false,
@@ -149,8 +159,9 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration } =
+    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration, reveal, revealed } =
       this.state;
+    const waitingForDone = won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed;
     const appClass = classNames("app", {
       "night-mode": nightMode,
       danger: danger,
@@ -178,7 +189,11 @@ class WritingApp extends React.Component {
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
                 />
-                {won ? (
+                {waitingForDone ? (
+                  <button type="button" className="done-reveal" onClick={this.revealText}>
+                    Done
+                  </button>
+                ) : won ? (
                   <WriteButton
                     small
                     ghost

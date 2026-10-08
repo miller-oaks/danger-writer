@@ -2,6 +2,7 @@ import React from "react";
 import WriteButton from "./WriteButton";
 import Space from "./Space";
 import { Link } from "react-router-dom";
+import Mark from "./Mark";
 
 const Welcome = () => (
   <div className="Welcome">
@@ -10,14 +11,13 @@ const Welcome = () => (
     </Link>
     <Space xl />
     <div>
-      <div className="logo">
-        <div className="mark"></div>
-        <h1>
-          <span>The Most</span>
-          <span>Dangerous</span>
-          <span>Writing App</span>
-        </h1>
-      </div>
+        <div className="logo">
+          <Mark />
+          <h1>
+            <span>Danger</span>
+            <span>Writing</span>
+          </h1>
+        </div>
       <Space m />
       <h2>
         Don’t stop typing, or all progress will be lost.
