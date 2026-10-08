@@ -6,8 +6,8 @@ import WriteButton from "./WriteButton";
 import { withAppContext } from "./AppContext";
 
 const TweetButton = ({ words }) => {
-  const href = `https://twitter.com/intent/tweet?text=I+wrote+${words}+words+using+The+Most+Dangerous+Writing+App+-+until+it+deleted+everything+.+%23MDWA&url=https%3A%2F%2Fmaebert.github.io%2Fthemostdangerouswritingapp%2F`;
-  const label = `I wrote ${words} words using The Most Dangerous Writing App - until it deleted everything.`;
+  const href = `https://twitter.com/intent/tweet?text=I+wrote+${words}+words+using+Danger+Writing+-+until+it+deleted+everything.&url=https%3A%2F%2Fmaebert.github.io%2Fthemostdangerouswritingapp%2F`;
+  const label = `I wrote ${words} words using Danger Writing - until it deleted everything.`;
   return (
     <a className="tweet" href={href}>
       {label}
@@ -15,7 +15,7 @@ const TweetButton = ({ words }) => {
   );
 };
 
-const Failure = ({ limit, type, lost, words }) => {
+const Failure = ({ limit, type, hardcore, lost, words }) => {
   return (
     <TransitionGroup>
       {lost && (
@@ -35,6 +35,7 @@ const Failure = ({ limit, type, lost, words }) => {
             Again."
                 type={type}
                 limit={limit}
+                hardcore={hardcore}
               />
             </div>
           </div>

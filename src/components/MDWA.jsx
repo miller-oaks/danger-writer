@@ -3,6 +3,7 @@ import Welcome from "./Welcome";
 import Help from "./Help";
 import WritingApp from "./App";
 import { NightModeProvider, useNightMode } from "./NightMode";
+import { parseHardcore } from "./hardcore";
 
 import {
   createHashRouter,
@@ -40,7 +41,7 @@ const App = (props) => {
   let appProps = {
     limit: parseInt(searchParams.get("limit"), 10) || 5,
     type: searchParams.get("type") || "minutes",
-    hardcore: parseFlag(searchParams.get("hardcore")),
+    hardcore: parseHardcore(searchParams.get("hardcore")),
   };
   // Setting a random key forces the component to re-mount even if
   // the route didn't change. That's useful for when we click the

@@ -4,6 +4,7 @@ import Space from "./Space";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { NightModeToggle, useNightMode } from "./NightMode";
+import Mark from "./Mark";
 
 const Welcome = () => {
   const { nightMode } = useNightMode();
@@ -16,11 +17,10 @@ const Welcome = () => {
       <Space xl />
       <div>
         <div className="logo">
-          <div className="mark"></div>
+          <Mark />
           <h1>
-            <span>The Most</span>
-            <span>Dangerous</span>
-            <span>Writing App</span>
+            <span>Danger</span>
+            <span>Writing</span>
           </h1>
         </div>
         <Space m />

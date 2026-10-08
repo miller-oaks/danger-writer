@@ -1,6 +1,6 @@
 {
-  "short_name": "MDWA",
-  "name": "The Most Dangerous Writing App",
+  "short_name": "Danger Writing",
+  "name": "Danger Writing",
   "description": "Don’t stop typing, or all progress will be lost.",
   "scope": "/write/",
   "icons": [

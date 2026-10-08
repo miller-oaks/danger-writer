@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client';
 
 import './styles/main.scss';
 import MDWA from './components/MDWA';
+import registerServiceWorker from './registerServiceWorker';
 
-// react-scripts does not emit service-worker.js. Registering the missing
-// file 404s, and the old localhost check then reloads the page in a loop.
+// The production build writes service-worker.js. Registration no longer
+// reloads when the file is missing, which is what the dev server does.
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<MDWA />);
+registerServiceWorker();

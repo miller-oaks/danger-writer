@@ -124,24 +124,23 @@
         }
 
         span:first-child {
-            top: -6px;
-        }
-
-        span:nth-child(2) {
-            top: 52px;
+            top: 16px;
             color: $red;
         }
 
+        span:nth-child(2),
         span:last-child {
-            top: 110px;
+            top: 78px;
+            color: inherit;
         }
     }
 
     .mark {
         width: 156px;
         height: 156px;
-        background: $red;
-        box-shadow: inset 0px 0px 0px 20px $red, inset 0px 0px 0px 32px $white;
+        display: block;
+        background: none;
+        box-shadow: none;
     }
 
     &.small {
@@ -166,7 +165,8 @@
         .mark {
             width: 24px;
             height: 24px;
-            box-shadow: inset 0px 0px 0px 3px $red, inset 0px 0px 0px 5px $white;
+            background: none;
+            box-shadow: none;
         }
 
         .caret {
