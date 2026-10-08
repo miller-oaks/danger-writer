@@ -50,7 +50,7 @@ export default class Help extends React.Component {
           <p>
             This version is a set of{" "}
             <a
-              href="https://github.com/miller-oaks/themostdangerouswritingapp"
+              href="https://github.com/miller-oaks/danger-writer"
               target="_blank"
               rel="noopener noreferrer"
             >
