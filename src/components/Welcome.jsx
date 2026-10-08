@@ -3,6 +3,7 @@ import WriteButton from "./WriteButton";
 import Space from "./Space";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { NightModeToggle, useNightMode } from "./NightMode";
 
 const Banner = () => {
   const [visible, setVisible] = useState(false);
@@ -43,9 +44,12 @@ const Banner = () => {
   );
 };
 
-const Welcome = () => (
-  <div className="Welcome">
+const Welcome = () => {
+  const { nightMode } = useNightMode();
+  return (
+  <div className={classNames("Welcome", { "night-mode": nightMode })}>
     <Banner />
+    <NightModeToggle />
     <Link to="/help" className="navButton helpButton">
       Help
     </Link>
@@ -69,6 +73,7 @@ const Welcome = () => (
     </div>
     <div className="accolades" />
   </div>
-);
+  );
+};
 
 export default Welcome;
