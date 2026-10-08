@@ -51,12 +51,7 @@ class WritingApp extends React.Component {
     };
   }
 
-  componentDidMount() {
-    if (window.plausible) window.plausible("Editor");
-  }
-
   startWriting() {
-    if (window.plausible) window.plausible("Start Writing");
     this.setState({
       run: true,
       startTime: this.now(),
@@ -108,13 +103,11 @@ class WritingApp extends React.Component {
       won: true,
       run: false,
     });
-    if (window.plausible) window.plausible("Win");
   }
 
   fail() {
     this.stopWriting();
     this.setState({ lost: true });
-    if (window.plausible) window.plausible("Fail");
   }
 
   reset(type, limit, hardcore) {
