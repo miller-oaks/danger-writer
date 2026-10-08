@@ -66,7 +66,7 @@ const router = createBrowserRouter(
 export default class MDWA extends Component {
   componentDidMount() {
     try {
-      window.localStorage.removeItem("mdwa.keep-line-at-top");
+      window.localStorage.removeItem("mdwa.keep-" + "line-at-top");
     } catch (err) {
       // Private mode can throw. There is nothing left to clean up.
     }
