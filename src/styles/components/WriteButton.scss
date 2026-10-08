@@ -9,6 +9,34 @@
     &.small .session-chooser {bottom: 35px;}
   }
 
+.writeButton .quick-starts
+  {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    a
+      {
+      margin: 0;
+      font-family: Lato, sans-serif;
+      font-size: $xsmall;
+      font-weight: 400 !important;
+      line-height: 1;
+      padding: 7px 12px;
+      border-radius: 100px;
+      border: 1px solid $light-grey;
+      color: $grey;
+      text-decoration: none;
+      background: transparent;
+      &:hover { color: $white; background: $grey; border-color: $grey; }
+      }
+  }
+
 .writeButton a, button
     {
     text-align: center;

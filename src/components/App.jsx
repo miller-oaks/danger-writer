@@ -11,6 +11,7 @@ import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { isHardcore, parseHardcore } from "./hardcore";
 import { REVEAL_DONE, readReveal } from "./reveal";
+import { rememberSession } from "./recentSessions";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -62,6 +63,11 @@ class WritingApp extends React.Component {
   }
 
   startWriting() {
+    rememberSession({
+      limit: this.state.limit,
+      type: this.state.type,
+      hardcore: this.state.hardcore,
+    });
     if (window.plausible) window.plausible("Start Writing");
     this.setState({
       run: true,
