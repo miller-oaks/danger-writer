@@ -43,8 +43,28 @@ export default class Editor extends Component {
     });
   }
 
+  focusAtEnd() {
+    const place = () => {
+      const input = this.input.current;
+      if (!input) return;
+      input.focus();
+      const end = input.value.length;
+      try {
+        input.setSelectionRange(end, end);
+      } catch (err) {
+        // Some browsers reject a range before the control is ready.
+      }
+    };
+    place();
+    requestAnimationFrame(place);
+  }
+
   componentDidMount(){
-   this.input.current.focus();
+   this.focusAtEnd();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.won && !this.props.won) this.focusAtEnd();
   }
 
   onChange(event) {
