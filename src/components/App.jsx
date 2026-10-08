@@ -30,6 +30,7 @@ class WritingApp extends React.Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleNightMode = this.toggleNightMode.bind(this);
     this.revealText = this.revealText.bind(this);
+    this.finishNoLimit = this.finishNoLimit.bind(this);
     this.now = this.now.bind(this);
     this.editor = React.createRef();
 
@@ -111,6 +112,16 @@ class WritingApp extends React.Component {
     this.setState({ revealed: true });
   }
 
+  finishNoLimit() {
+    this.stopWriting();
+    this.setState({
+      won: true,
+      run: false,
+      revealed: true,
+      danger: false,
+    });
+  }
+
   win() {
     this.stopWriting();
     this.setState({
@@ -149,6 +160,7 @@ class WritingApp extends React.Component {
     const { run, words, timeSinceStroke, startTime, fade, type, limit, kill } =
       this.state;
     if (!run) return;
+    if (type === "none") return;
     const danger = timeSinceStroke >= fade;
     if (timeSinceStroke >= kill) return this.fail();
     const duration = this.now() - startTime;
@@ -168,9 +180,13 @@ class WritingApp extends React.Component {
   render() {
     const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration, reveal, revealed } =
       this.state;
-    const waitingForDone = won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed;
+    const noLimit = type === "none";
+    const waitingForDone =
+      (noLimit && !won) ||
+      (won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed);
     const appClass = classNames("app", {
       "night-mode": nightMode,
+      "no-limit": noLimit && !won,
       danger: danger,
     });
     return (
@@ -196,11 +212,16 @@ class WritingApp extends React.Component {
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
                 />
-                {waitingForDone ? (
-                  <button type="button" className="done-reveal" onClick={this.revealText}>
+                {waitingForDone && (
+                  <button
+                    type="button"
+                    className="done-reveal"
+                    onClick={noLimit && !won ? this.finishNoLimit : this.revealText}
+                  >
                     Done
                   </button>
-                ) : won ? (
+                )}
+                {won && !waitingForDone ? (
                   <WriteButton
                     small
                     ghost
@@ -208,9 +229,9 @@ class WritingApp extends React.Component {
                     label="Start Again"
                     {...{ limit, type, hardcore }}
                   />
-                ) : (
+                ) : !won ? (
                   <WordCount />
-                )}
+                ) : null}
               </div>
             )}
           </div>
