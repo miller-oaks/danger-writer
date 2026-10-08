@@ -94,6 +94,54 @@
     input[type=checkbox] {
     }
 
+    .hardcore-levels
+        {
+        margin: 15px 0 5px;
+        .label { margin-right: 6px; }
+        .level
+            {
+            cursor: pointer;
+            opacity: .55;
+            display: inline-block;
+            min-width: 26px;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 8px;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            }
+        .level.active
+            {
+            opacity: 1;
+            color: $white;
+            border-color: $white;
+            }
+        }
+
+    .reveal-at-end
+        {
+        margin: 4px 8px 8px;
+        .label { display: block; margin-bottom: 4px; }
+        .level
+            {
+            cursor: pointer;
+            opacity: .55;
+            display: inline-block;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 8px;
+            margin: 2px 2px 0 0;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            }
+        .level.active
+            {
+            opacity: 1;
+            color: $white;
+            border-color: $white;
+            }
+        }
+
     .hardcore
         {
         cursor: pointer;
