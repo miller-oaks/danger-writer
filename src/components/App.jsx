@@ -5,6 +5,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Progress from "./Progress";
 import WordCount from "./WordCount";
 import SessionEnd from "./SessionEnd";
+import HomeButton from "./HomeButton";
 import Failure from "./Failure";
 import Download from "./Download";
 import CopyButton from "./CopyButton";
@@ -236,6 +237,7 @@ class WritingApp extends React.Component {
           <div className={appClass}>
             <Failure />
             <Progress />
+            {won && !showReveal && <HomeButton text={text} />}
             <div className="buttons">
               {won && <Download finishTime={startTime + duration} text={text} />}
               {won && <CopyButton text={text} />}
