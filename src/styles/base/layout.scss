@@ -88,4 +88,23 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
         color: $white;
         &:before {border: 1px solid $white;}
         }
+    &.homeButton
+        {
+        z-index: 120;
+        &:before
+            {
+            content: '\3c';
+            padding: 1px 2px 0 0;
+            width: 18px;
+            height: 19px;
+            }
+        }
 }
+
+.app.night-mode .navButton.homeButton
+    {
+    color: $off-white;
+    &:before { border-color: $off-white; }
+    }
+
+.failure .navButton.helpButton { left: 120px; }

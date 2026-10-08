@@ -5,13 +5,13 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Progress from "./Progress";
 import WordCount from "./WordCount";
 import SessionEnd from "./SessionEnd";
+import HomeButton from "./HomeButton";
 import Failure from "./Failure";
 import Download from "./Download";
 import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { readNoDelete } from "./noDelete";
-import { readKeepLine } from "./keepLine";
 import { isHardcore, parseHardcore } from "./hardcore";
 import { REVEAL_DONE, readReveal } from "./reveal";
 import { rememberSession } from "./recentSessions";
@@ -59,7 +59,6 @@ class WritingApp extends React.Component {
       hardcore: parseHardcore(hardcore),
       reveal: readReveal(),
       revealed: false,
-      keepLine: readKeepLine(),
       noDelete: readNoDelete(),
     };
   }
@@ -216,13 +215,17 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed, keepLine, noDelete } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed, noDelete } =
       this.state;
     const { nightMode } = this.context;
     const noLimit = type === "none";
-    const waitingForDone =
-      (noLimit && !won) ||
-      (won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed);
+    const hardcoreOn = isHardcore(hardcore);
+    const blurHeld = hardcoreOn && won && reveal === REVEAL_DONE && !revealed;
+    const showReveal = hardcoreOn && ((noLimit && !won) || blurHeld);
+    // A timed session ends on its own. A No-limit session does not, so without
+    // Hardcore the same red button is the only way to finish, and it stays "Done".
+    const showFinish = !hardcoreOn && noLimit && !won;
+    const waitingForDone = showReveal || showFinish;
     const appClass = classNames("app", {
       "night-mode": nightMode,
       "no-limit": noLimit && !won,
@@ -234,6 +237,7 @@ class WritingApp extends React.Component {
           <div className={appClass}>
             <Failure />
             <Progress />
+            {won && !showReveal && <HomeButton text={text} />}
             <div className="buttons">
               {won && <Download finishTime={startTime + duration} text={text} />}
               {won && <CopyButton text={text} />}
@@ -251,7 +255,6 @@ class WritingApp extends React.Component {
                   onStroke={this.handleStroke}
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
-                  keepLine={keepLine}
                   noDelete={noDelete}
                 />
                 {waitingForDone && (
@@ -260,7 +263,7 @@ class WritingApp extends React.Component {
                     className="done-reveal"
                     onClick={noLimit && !won ? this.finishNoLimit : this.revealText}
                   >
-                    Done
+                    {showReveal ? "Reveal" : "Done"}
                   </button>
                 )}
                 {won && !waitingForDone ? (

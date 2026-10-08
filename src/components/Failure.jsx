@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import WriteButton from "./WriteButton";
+import { HomeLink } from "./HomeButton";
 import { withAppContext } from "./AppContext";
 
 const TweetButton = ({ words }) => {
@@ -21,6 +22,7 @@ const Failure = ({ limit, type, hardcore, lost, words }) => {
       {lost && (
         <CSSTransition classNames="failure" timeout={{ enter: 500, exit: 100 }}>
           <div className="failure" key="failScreen">
+            <HomeLink className="navButton backButton homeButton white" />
             <Link to="/help" className="navButton helpButton white">
               Help
             </Link>
