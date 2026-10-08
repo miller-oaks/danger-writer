@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { readKeepLine, writeKeepLine } from "./keepLine";
 var classNames = require('classnames');
 
 export default class WriteButton extends React.Component {
@@ -10,13 +11,15 @@ export default class WriteButton extends React.Component {
       limit: this.props.limit || 5,
       type: this.props.type || "minutes",
       compact: true,
-      hidePanel: this.props.hidePanel
+      hidePanel: this.props.hidePanel,
+      keepLine: readKeepLine(),
     };
 
     this.onExpand = this.onExpand.bind(this);
     this.setLimit = this.setLimit.bind(this);
     this.setType = this.setType.bind(this);
     this.toggleHardcore = this.toggleHardcore.bind(this);
+    this.toggleKeepLine = this.toggleKeepLine.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
 
@@ -46,6 +49,10 @@ export default class WriteButton extends React.Component {
     });
   }
   toggleHardcore(hardcore) { this.setState((prevState, props) => ({ hardcore: !prevState.hardcore })); }
+  toggleKeepLine() {
+    const keepLine = writeKeepLine(!this.state.keepLine);
+    this.setState({ keepLine });
+  }
 
   renderOptions() {
     const options = this.props.limits[this.state.type];
@@ -74,6 +81,7 @@ export default class WriteButton extends React.Component {
             { this.renderOptions() }
           </div>
             <div onClick={this.toggleHardcore} className={classNames('hardcore', {checked: this.state.hardcore})}>Hardcore mode</div>
+            <div onClick={this.toggleKeepLine} className={classNames('hardcore', {checked: this.state.keepLine})}>Keep current line at top</div>
         </div>
       </div>
     )

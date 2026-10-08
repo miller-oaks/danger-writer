@@ -11,6 +11,7 @@ import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { NightModeContext } from "./NightMode";
+import { readKeepLine } from "./keepLine";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -50,6 +51,7 @@ class WritingApp extends React.Component {
       limit: limit,
       type: type,
       hardcore: hardcore,
+      keepLine: readKeepLine(),
     };
   }
 
@@ -176,7 +178,7 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, keepLine } =
       this.state;
     const { nightMode } = this.context;
     const appClass = classNames("app", {
@@ -206,6 +208,7 @@ class WritingApp extends React.Component {
                   onStroke={this.handleStroke}
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
+                  keepLine={keepLine}
                 />
                 {won ? (
                   <SessionEnd
