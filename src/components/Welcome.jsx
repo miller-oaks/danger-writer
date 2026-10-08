@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { NightModeToggle, useNightMode } from "./NightMode";
 import Mark from "./Mark";
+import DockTip from "./DockTip";
 
 const Welcome = () => {
   const { nightMode } = useNightMode();
@@ -30,6 +31,7 @@ const Welcome = () => {
         </h2>
         <Space xl />
         <WriteButton ghost color="red" />
+        <DockTip />
       </div>
       <p className="forkCredit">
         This is a{" "}
