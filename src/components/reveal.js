@@ -1,8 +1,8 @@
 export const REVEAL_AUTOMATIC = "automatic";
 export const REVEAL_DONE = "done";
 
-// Upstream default. personalize may change this one constant.
-export const DEFAULT_REVEAL = REVEAL_AUTOMATIC;
+// personalize default. The custom branch keeps REVEAL_AUTOMATIC.
+export const DEFAULT_REVEAL = REVEAL_DONE;
 
 export const REVEAL_STORAGE_KEY = "mdwa.reveal-at-end";
 
