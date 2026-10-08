@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { readNoDelete, writeNoDelete } from "./noDelete";
-import { readKeepLine, writeKeepLine } from "./keepLine";
 import { hardcoreQuery, parseHardcore } from "./hardcore";
 import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
 import QuickStarts from "./QuickStarts";
@@ -17,7 +16,6 @@ export default class WriteButton extends React.Component {
       type: this.props.type || "minutes",
       compact: true,
       hidePanel: this.props.hidePanel,
-      keepLine: readKeepLine(),
       noDelete: readNoDelete(),
     };
 
@@ -26,7 +24,6 @@ export default class WriteButton extends React.Component {
     this.setType = this.setType.bind(this);
     this.toggleHardcore = this.toggleHardcore.bind(this);
     this.setReveal = this.setReveal.bind(this);
-    this.toggleKeepLine = this.toggleKeepLine.bind(this);
     this.toggleNoDelete = this.toggleNoDelete.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
@@ -65,10 +62,6 @@ export default class WriteButton extends React.Component {
     this.setState((prev) => ({ hardcore: !parseHardcore(prev.hardcore) }));
   }
   setReveal(reveal) { this.setState({ reveal: writeReveal(reveal) }); }
-  toggleKeepLine() {
-    const keepLine = writeKeepLine(!this.state.keepLine);
-    this.setState({ keepLine });
-  }
   toggleNoDelete() {
     const noDelete = writeNoDelete(!this.state.noDelete);
     this.setState({ noDelete });
@@ -120,7 +113,6 @@ export default class WriteButton extends React.Component {
                 when I press Done
               </span>
             </div>
-            <div onClick={this.toggleKeepLine} className={classNames('hardcore', {checked: this.state.keepLine})}>Keep current line at top</div>
             <div onClick={this.toggleNoDelete} className={classNames('hardcore', {checked: this.state.noDelete})}>No deleting</div>
         </div>
       </div>

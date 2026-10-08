@@ -35,11 +35,7 @@ export default class Editor extends Component {
   }
 
   onScroll(event) {
-    const input = this.input.current;
-    if (this.shouldPin() && input.scrollTop < (this.lockedScroll || 0) - 1) {
-      input.scrollTop = this.lockedScroll || 0;
-    }
-    const { scrollTop, scrollHeight } = input;
+    const { scrollTop, scrollHeight } = this.input.current;
     const height = this.wrapper.current.clientHeight;
     this.setState({
       cutTop: scrollTop > 0,
@@ -49,72 +45,6 @@ export default class Editor extends Component {
 
   componentDidMount(){
    this.input.current.focus();
-   this.blockScroll = (event) => {
-     if (this.shouldPin()) event.preventDefault();
-   };
-   this.input.current.addEventListener("wheel", this.blockScroll, { passive: false });
-   this.input.current.addEventListener("touchmove", this.blockScroll, { passive: false });
-   if (this.shouldPin()) this.pinLine();
-  }
-
-  componentWillUnmount() {
-    if (this.input.current && this.blockScroll) {
-      this.input.current.removeEventListener("wheel", this.blockScroll);
-      this.input.current.removeEventListener("touchmove", this.blockScroll);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.won && !prevProps.won && (this.props.keepLine || this.pinned)) {
-      this.releasePin();
-      return;
-    }
-    if (this.shouldPin()) this.pinLine();
-    else if (!this.releasing && this.input.current) this.input.current.style.paddingBottom = "";
-  }
-
-  shouldPin() {
-    return !!this.props.keepLine && !this.props.won && !this.releasing;
-  }
-
-  pinLine() {
-    const input = this.input.current;
-    if (!input) return;
-    const lineHeight = parseFloat(window.getComputedStyle(input).lineHeight) || 32;
-    const margin = lineHeight * 2;
-    const pad = Math.max(0, input.clientHeight - margin);
-    input.style.paddingBottom = `${pad}px`;
-    const locked = Math.max(0, input.scrollHeight - input.clientHeight);
-    input.scrollTop = locked;
-    this.lockedScroll = locked;
-    this.pinned = true;
-  }
-
-  releasePin() {
-    const input = this.input.current;
-    if (!input) return;
-    this.releasing = true;
-    this.pinned = false;
-    const startPad = parseFloat(input.style.paddingBottom) || 0;
-    const duration = 700;
-    const t0 = performance.now();
-    const step = (now) => {
-      if (!this.input.current) return;
-      const p = Math.min(1, (now - t0) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      input.style.paddingBottom = `${Math.max(0, startPad * (1 - eased))}px`;
-      const overflows = input.scrollHeight > input.clientHeight + 1;
-      input.scrollTop = overflows ? input.scrollHeight - input.clientHeight : 0;
-      if (p < 1) requestAnimationFrame(step);
-      else {
-        input.style.paddingBottom = "";
-        const stillOverflows = input.scrollHeight > input.clientHeight + 1;
-        input.scrollTop = stillOverflows ? input.scrollHeight - input.clientHeight : 0;
-        this.releasing = false;
-        this.lockedScroll = 0;
-      }
-    };
-    requestAnimationFrame(step);
   }
 
   onChange(event) {
