@@ -1,4 +1,4 @@
-import { hardcoreQuery, parseHardcore } from "./hardcore";
+import { hardcoreQuery, isHardcore, parseHardcore } from "./hardcore";
 
 const KEY = "mdwa.recent-sessions";
 
@@ -32,9 +32,7 @@ function lengthLabel(item) {
 export function sessionLabel(setup) {
   const item = normalizeSetup(setup);
   const length = lengthLabel(item);
-  if (item.hardcore === "letter") return `${length} · Letter`;
-  if (item.hardcore === "word") return `${length} · Word`;
-  return length;
+  return isHardcore(item.hardcore) ? `${length} · Hardcore` : length;
 }
 
 export function readRecentSessions() {
@@ -50,7 +48,16 @@ export function readRecentSessions() {
       seen.add(key);
       sessions.push(item);
     });
-    return sessions.slice(0, 3);
+    const sessionsOut = sessions.slice(0, 3);
+    const stale = parsed.some((setup) => setup && setup.hardcore != null && typeof setup.hardcore !== "boolean");
+    if (stale) {
+      try {
+        window.localStorage.setItem(KEY, JSON.stringify(sessionsOut));
+      } catch (err) {
+        // Ignore storage failures. The in-memory list is already off unless explicitly on.
+      }
+    }
+    return sessionsOut;
   } catch (err) {
     return [];
   }
