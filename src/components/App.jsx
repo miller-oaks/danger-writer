@@ -4,13 +4,15 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import Progress from "./Progress";
 import WordCount from "./WordCount";
-import WriteButton from "./WriteButton";
+import SessionEnd from "./SessionEnd";
 import Failure from "./Failure";
 import Download from "./Download";
+import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { isHardcore, parseHardcore } from "./hardcore";
 import { REVEAL_DONE, readReveal } from "./reveal";
+import { NightModeContext } from "./NightMode";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -20,13 +22,17 @@ const withFullscreenHook = (Component) => {
 };
 
 class WritingApp extends React.Component {
+  static contextType = NightModeContext;
+
   constructor(props) {
     super(props);
 
-    let { limit, type, hardcore, nightmode, fullscreenHandler } = this.props;
+    let { limit, type, hardcore, fullscreenHandler } = this.props;
     this.handleStroke = this.handleStroke.bind(this);
     this.fullscreenHandler = fullscreenHandler;
     this.reset = this.reset.bind(this);
+    this.newSession = this.newSession.bind(this);
+    this.continueSession = this.continueSession.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleNightMode = this.toggleNightMode.bind(this);
     this.revealText = this.revealText.bind(this);
@@ -37,10 +43,6 @@ class WritingApp extends React.Component {
       run: false,
       startTime: null,
       fullscreen: false,
-      nightMode:
-        nightmode !== null
-          ? nightmode
-          : localStorage.getItem("mdwa.night-mode") === "true",
       progress: 0,
       timeSinceStroke: 0,
       danger: false,
@@ -70,8 +72,7 @@ class WritingApp extends React.Component {
   }
 
   toggleNightMode() {
-    localStorage.setItem("mdwa.night-mode", !this.state.nightMode);
-    this.setState((prevState, props) => ({ nightMode: !prevState.nightMode }));
+    this.context.toggleNightMode();
   }
 
   toggleFullscreen() {
@@ -145,6 +146,33 @@ class WritingApp extends React.Component {
     this.editor.current && this.editor.current.reset();
   }
 
+  newSession() {
+    const { type, limit, hardcore } = this.state;
+    this.reset(type, limit, hardcore);
+  }
+
+  continueSession({ type, limit, hardcore }) {
+    const text =
+      (this.editor.current && this.editor.current.state.text) ||
+      this.state.text ||
+      "";
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    this.setState({
+      type,
+      limit,
+      hardcore: parseHardcore(hardcore),
+      won: false,
+      lost: false,
+      run: false,
+      startTime: null,
+      progress: 0,
+      timeSinceStroke: 0,
+      danger: false,
+      words,
+      text,
+    });
+  }
+
   tick() {
     const { run, words, timeSinceStroke, startTime, fade, type, limit, kill } =
       this.state;
@@ -166,8 +194,9 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration, reveal, revealed } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, reveal, revealed } =
       this.state;
+    const { nightMode } = this.context;
     const waitingForDone = won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed;
     const appClass = classNames("app", {
       "night-mode": nightMode,
@@ -181,6 +210,7 @@ class WritingApp extends React.Component {
             <Progress />
             <div className="buttons">
               {won && <Download finishTime={startTime + duration} text={text} />}
+              {won && <CopyButton text={text} />}
               <i className="icon-night-mode" onClick={this.toggleNightMode}></i>
               <i
                 className="icon-fullscreen"
@@ -201,12 +231,13 @@ class WritingApp extends React.Component {
                     Done
                   </button>
                 ) : won ? (
-                  <WriteButton
-                    small
-                    ghost
-                    hidePanel
-                    label="Start Again"
-                    {...{ limit, type, hardcore }}
+                  <SessionEnd
+                    text={text}
+                    limit={limit}
+                    type={type}
+                    hardcore={hardcore}
+                    onNewSession={this.newSession}
+                    onContinue={this.continueSession}
                   />
                 ) : (
                   <WordCount />

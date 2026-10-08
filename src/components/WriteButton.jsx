@@ -117,19 +117,33 @@ export default class WriteButton extends React.Component {
       ghost: this.props.ghost
     })
     const {limit, type, hardcore} = this.state;
+    const startContinuing = () => {
+      this.props.onStart({ limit, type, hardcore });
+    };
     return (
       <div className={wrapperWlasses}>
         { !this.props.noPanel && !this.state.hidePanel && (this.state.compact ? this.renderCompactChooser() : this.renderFullChooser()) }
-        <Link
-          to={{
-            pathname: "/write",
-            search: `?limit=${limit}&type=${type}` + hardcoreQuery(hardcore)
-          }}
-          className={buttonClasses}
-          onMouseOver={this.showPanel}
-        >
-          { this.props.label }
-        </Link>
+        { this.props.onStart ? (
+          <button
+            type="button"
+            className={buttonClasses}
+            onMouseOver={this.showPanel}
+            onClick={startContinuing}
+          >
+            { this.props.label }
+          </button>
+        ) : (
+          <Link
+            to={{
+              pathname: "/write",
+              search: `?limit=${limit}&type=${type}` + hardcoreQuery(hardcore)
+            }}
+            className={buttonClasses}
+            onMouseOver={this.showPanel}
+          >
+            { this.props.label }
+          </Link>
+        )}
       </div>
     )
   }
