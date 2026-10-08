@@ -32,13 +32,21 @@ const Welcome = () => {
         <WriteButton ghost color="red" />
       </div>
       <p className="forkCredit">
-        This is a fork of{" "}
+        This is a{" "}
+        <a
+          href="https://github.com/miller-oaks/themostdangerouswritingapp"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          fork
+        </a>{" "}
+        of{" "}
         <a
           href="https://github.com/maebert/themostdangerouswritingapp"
           target="_blank"
           rel="noopener noreferrer"
         >
-          The Most Dangerous Writing App
+          <i className="icon-mdwa" aria-hidden="true" /> The Most Dangerous Writing App
         </a>
         . Manu Ebert is amazing for building it.
       </p>

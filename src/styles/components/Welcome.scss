@@ -41,6 +41,11 @@
         a {
             color: inherit;
 
+            .icon-mdwa {
+                vertical-align: baseline;
+                margin-right: 0.35em;
+            }
+
             &:hover {
                 color: $grey;
             }
