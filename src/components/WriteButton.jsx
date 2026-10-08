@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { HARDCORE_LEVELS, hardcoreQuery, parseHardcore } from "./hardcore";
+import { REVEAL_AUTOMATIC, REVEAL_DONE, readReveal, writeReveal } from "./reveal";
 var classNames = require('classnames');
 
 export default class WriteButton extends React.Component {
@@ -8,6 +9,7 @@ export default class WriteButton extends React.Component {
     super(props);
     this.state = {
       hardcore: parseHardcore(this.props.hardcore),
+      reveal: readReveal(),
       limit: this.props.limit || 5,
       type: this.props.type || "minutes",
       compact: true,
@@ -18,6 +20,7 @@ export default class WriteButton extends React.Component {
     this.setLimit = this.setLimit.bind(this);
     this.setType = this.setType.bind(this);
     this.setHardcore = this.setHardcore.bind(this);
+    this.setReveal = this.setReveal.bind(this);
     this.showPanel = this.showPanel.bind(this);
   }
 
@@ -47,6 +50,7 @@ export default class WriteButton extends React.Component {
     });
   }
   setHardcore(hardcore) { this.setState({ hardcore: parseHardcore(hardcore) }); }
+  setReveal(reveal) { this.setState({ reveal: writeReveal(reveal) }); }
 
   renderOptions() {
     const options = this.props.limits[this.state.type];
@@ -85,6 +89,21 @@ export default class WriteButton extends React.Component {
                   {label}
                 </span>
               )) }
+            </div>
+            <div className="reveal-at-end">
+              <span className="label">Reveal at end</span>
+              <span
+                className={classNames("level", { active: this.state.reveal === REVEAL_AUTOMATIC })}
+                onClick={() => this.setReveal(REVEAL_AUTOMATIC)}
+              >
+                automatically
+              </span>
+              <span
+                className={classNames("level", { active: this.state.reveal === REVEAL_DONE })}
+                onClick={() => this.setReveal(REVEAL_DONE)}
+              >
+                when I press Done
+              </span>
             </div>
         </div>
       </div>
