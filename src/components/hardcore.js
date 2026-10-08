@@ -4,8 +4,8 @@ export const HARDCORE_LEVELS = [
   { id: "word", label: "Word" },
 ];
 
-// Upstream default. personalize may change this one constant.
-export const DEFAULT_HARDCORE = "off";
+// personalize default. The custom branch keeps "off".
+export const DEFAULT_HARDCORE = "word";
 
 export function parseHardcore(value) {
   if (value === true) return "letter";
