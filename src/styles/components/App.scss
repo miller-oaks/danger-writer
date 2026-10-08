@@ -35,19 +35,28 @@
         {
         background: $dark;
         color: $off-white;
-        i.icon-night-mode {transform: rotate(180deg);}
         }
 
     .buttons
         {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 100;
-        font-size: $reg;
-        i { opacity: .2; cursor: pointer; display: inline-block;}
-        i:hover { opacity: 1; }
         }
+    }
+
+.buttons
+    {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    font-size: $reg;
+    i { opacity: .2; cursor: pointer; display: inline-block;}
+    i:hover { opacity: 1; }
+    }
+
+body.night-mode .icon-night-mode
+    {
+    transform: rotate(180deg);
     }
 
 .fullscreen-enabled .app {
