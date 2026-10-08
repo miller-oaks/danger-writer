@@ -16,7 +16,7 @@ export default class Download extends React.Component {
     // Replace clean newlines with windows evil
     const text = this.props.text.replace(/([^\r])\n/g, "$1\r\n");
     const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
-    const filename = `${title} (Danger Writing ${date}).txt`;
+    const filename = `${title} (Danger Writer ${date}).txt`;
     FileSaver.saveAs(blob, filename);
   }
 

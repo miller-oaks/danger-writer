@@ -15,7 +15,7 @@ const Welcome = () => (
           <Mark />
           <h1>
             <span>Danger</span>
-            <span>Writing</span>
+            <span>Writer</span>
           </h1>
         </div>
       <Space m />
