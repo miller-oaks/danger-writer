@@ -17,16 +17,17 @@
         .mark
             {
             width: 90px; height: 90px;
-            box-shadow: inset 0px 0px 0px 12px $red, inset 0px 0px 0px 18px $white;
+            background: none;
+            box-shadow: none;
             }
         h1
             {
             width: calc(100% - 100px);
             left: 100px;
             font-size: $xlarge;
-            span:first-child { top: -2px; }
-            span:nth-child(2) { top: 30px;}
-            span:last-child { top: 64px; }
+            span:first-child { top: 6px; color: $red; }
+            span:nth-child(2),
+            span:last-child { top: 40px; color: inherit; }
             }
         &.small { width: 210px; }
         }

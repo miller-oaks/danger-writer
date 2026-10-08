@@ -2,6 +2,7 @@ import React from "react";
 import WriteButton from "./WriteButton";
 import Space from "./Space";
 import { Link } from "react-router-dom";
+import Mark from "./Mark";
 
 export default class Help extends React.Component {
   render() {
@@ -13,12 +14,11 @@ export default class Help extends React.Component {
         <Space l />
         <div className="content">
           <div className="logo small">
-            <div className="mark" />
+            <Mark />
             <h1>
-              <span>The Most</span>
-              <span>Dangerous</span>
+              <span>Danger</span>
               <span>
-                Writing App
+                Writing
                 <i className="caret icon-cursor" />
               </span>
             </h1>
@@ -27,7 +27,7 @@ export default class Help extends React.Component {
           <h1>Help</h1>
           <h2>What's the point?</h2>
           <p>
-            The Most Dangerous Writing App is designed to shut down your inner
+            Danger Writing is designed to shut down your inner
             editor and get you into a state of flow. If you stop typing for more
             than five seconds, all progress will be lost. After typing without
             interruption for the length of your session, you'll be able to save
