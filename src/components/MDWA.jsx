@@ -4,7 +4,7 @@ import Help from "./Help";
 import WritingApp from "./App";
 
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
   useSearchParams,
 } from "react-router-dom";
@@ -39,14 +39,14 @@ const App = (props) => {
   return <WritingApp key={Math.random()} {...appProps} />;
 };
 
-const router = createBrowserRouter(
-  [
-    { path: "/", element: <Welcome /> },
-    { path: "/write", element: <App /> },
-    { path: "/help", element: <Help /> },
-  ],
-  { basename: process.env.PUBLIC_URL }
-);
+// Hash URLs stay on index.html, so a static host can serve the app from
+// /write/ with no rewrites. PUBLIC_URL prefixes assets only; it is not
+// part of the hash path, so the router has no basename.
+const router = createHashRouter([
+  { path: "/", element: <Welcome /> },
+  { path: "/write", element: <App /> },
+  { path: "/help", element: <Help /> },
+]);
 
 export default class MDWA extends Component {
   render() {
