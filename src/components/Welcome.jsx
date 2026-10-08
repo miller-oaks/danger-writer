@@ -29,7 +29,7 @@ const Welcome = () => (
     <p className="forkCredit">
       This is a{" "}
       <a
-        href="https://github.com/miller-oaks/themostdangerouswritingapp"
+        href="https://github.com/miller-oaks/danger-writer"
         target="_blank"
         rel="noopener noreferrer"
       >
