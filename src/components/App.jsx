@@ -9,6 +9,7 @@ import Failure from "./Failure";
 import Download from "./Download";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
+import { NightModeContext } from "./NightMode";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -18,10 +19,12 @@ const withFullscreenHook = (Component) => {
 };
 
 class WritingApp extends React.Component {
+  static contextType = NightModeContext;
+
   constructor(props) {
     super(props);
 
-    let { limit, type, hardcore, nightmode, fullscreenHandler } = this.props;
+    let { limit, type, hardcore, fullscreenHandler } = this.props;
     this.handleStroke = this.handleStroke.bind(this);
     this.fullscreenHandler = fullscreenHandler;
     this.reset = this.reset.bind(this);
@@ -34,10 +37,6 @@ class WritingApp extends React.Component {
       run: false,
       startTime: null,
       fullscreen: false,
-      nightMode:
-        nightmode !== null
-          ? nightmode
-          : localStorage.getItem("mdwa.night-mode") === "true",
       progress: 0,
       timeSinceStroke: 0,
       danger: false,
@@ -65,8 +64,7 @@ class WritingApp extends React.Component {
   }
 
   toggleNightMode() {
-    localStorage.setItem("mdwa.night-mode", !this.state.nightMode);
-    this.setState((prevState, props) => ({ nightMode: !prevState.nightMode }));
+    this.context.toggleNightMode();
   }
 
   toggleFullscreen() {
@@ -155,8 +153,9 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, nightMode, limit, type, hardcore, startTime, duration } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration } =
       this.state;
+    const { nightMode } = this.context;
     const appClass = classNames("app", {
       "night-mode": nightMode,
       danger: danger,
