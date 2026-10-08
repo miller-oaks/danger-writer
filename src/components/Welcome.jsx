@@ -41,7 +41,7 @@ const Welcome = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        The Most Dangerous Writing App
+        <i className="icon-mdwa" aria-hidden="true" /> The Most Dangerous Writing App
       </a>
       . Manu Ebert is amazing for building it.
     </p>
