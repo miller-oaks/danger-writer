@@ -121,6 +121,8 @@ export default class Editor extends Component {
     const next = event.target.value;
     if (this.props.noDelete && !preservesText(this.state.text, next)) return;
     this.setState({text: next});
+    // keydown reports the value from before this character landed.
+    this.props.onStroke("", next);
   }
 
   selectionReplaces() {
