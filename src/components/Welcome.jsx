@@ -4,6 +4,7 @@ import Space from "./Space";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { NightModeToggle, useNightMode } from "./NightMode";
+import DockTip from "./DockTip";
 
 const Banner = () => {
   const [visible, setVisible] = useState(false);
@@ -70,6 +71,7 @@ const Welcome = () => {
       </h2>
       <Space xl />
       <WriteButton ghost color="red" />
+      <DockTip />
     </div>
     <div className="accolades" />
   </div>
