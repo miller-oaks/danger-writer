@@ -13,6 +13,9 @@ import { AppContext } from "./AppContext";
 import { NightModeContext } from "./NightMode";
 import { readKeepLine } from "./keepLine";
 import { readNoDelete } from "./noDelete";
+import { isHardcore, parseHardcore } from "./hardcore";
+import { REVEAL_DONE, readReveal } from "./reveal";
+import { rememberSession } from "./recentSessions";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -35,6 +38,8 @@ class WritingApp extends React.Component {
     this.continueSession = this.continueSession.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleNightMode = this.toggleNightMode.bind(this);
+    this.revealText = this.revealText.bind(this);
+    this.finishNoLimit = this.finishNoLimit.bind(this);
     this.now = this.now.bind(this);
     this.editor = React.createRef();
 
@@ -51,13 +56,20 @@ class WritingApp extends React.Component {
       kill: 5,
       limit: limit,
       type: type,
-      hardcore: hardcore,
+      hardcore: parseHardcore(hardcore),
+      reveal: readReveal(),
+      revealed: false,
       keepLine: readKeepLine(),
       noDelete: readNoDelete(),
     };
   }
 
   startWriting() {
+    rememberSession({
+      limit: this.state.limit,
+      type: this.state.type,
+      hardcore: this.state.hardcore,
+    });
     this.setState({
       run: true,
       startTime: this.now(),
@@ -102,6 +114,20 @@ class WritingApp extends React.Component {
     return new Date().getTime() / 1000;
   }
 
+  revealText() {
+    this.setState({ revealed: true });
+  }
+
+  finishNoLimit() {
+    this.stopWriting();
+    this.setState({
+      won: true,
+      run: false,
+      revealed: true,
+      danger: false,
+    });
+  }
+
   win() {
     this.stopWriting();
     this.setState({
@@ -119,7 +145,9 @@ class WritingApp extends React.Component {
     this.setState({
       type,
       limit,
-      hardcore,
+      hardcore: parseHardcore(hardcore),
+      reveal: readReveal(),
+      revealed: false,
       won: false,
       lost: false,
       run: false,
@@ -146,7 +174,8 @@ class WritingApp extends React.Component {
     this.setState({
       type,
       limit,
-      hardcore,
+      hardcore: parseHardcore(hardcore),
+      revealed: false,
       won: false,
       lost: false,
       run: false,
@@ -163,6 +192,7 @@ class WritingApp extends React.Component {
     const { run, words, timeSinceStroke, startTime, fade, type, limit, kill } =
       this.state;
     if (!run) return;
+    if (type === "none") return;
     const danger = timeSinceStroke >= fade;
     if (timeSinceStroke >= kill) return this.fail();
     const duration = this.now() - startTime;
@@ -180,11 +210,16 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, keepLine, noDelete } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, keepLine, noDelete, reveal, revealed } =
       this.state;
     const { nightMode } = this.context;
+    const noLimit = type === "none";
+    const waitingForDone =
+      (noLimit && !won) ||
+      (won && isHardcore(hardcore) && reveal === REVEAL_DONE && !revealed);
     const appClass = classNames("app", {
       "night-mode": nightMode,
+      "no-limit": noLimit && !won,
       danger: danger,
     });
     return (
@@ -213,7 +248,16 @@ class WritingApp extends React.Component {
                   keepLine={keepLine}
                   noDelete={noDelete}
                 />
-                {won ? (
+                {waitingForDone && (
+                  <button
+                    type="button"
+                    className="done-reveal"
+                    onClick={noLimit && !won ? this.finishNoLimit : this.revealText}
+                  >
+                    Done
+                  </button>
+                )}
+                {won && !waitingForDone ? (
                   <SessionEnd
                     text={text}
                     limit={limit}
@@ -222,9 +266,9 @@ class WritingApp extends React.Component {
                     onNewSession={this.newSession}
                     onContinue={this.continueSession}
                   />
-                ) : (
+                ) : !won ? (
                   <WordCount />
-                )}
+                ) : null}
               </div>
             )}
           </div>
