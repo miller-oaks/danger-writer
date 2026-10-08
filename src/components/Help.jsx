@@ -40,10 +40,6 @@ export default class Help extends React.Component {
     }
   ];
 
-  componentDidMount() {
-    if (window.plausible) window.plausible('Help')
-  }
-
   render() {
     return (
       <div className="Help">
