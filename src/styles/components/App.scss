@@ -35,23 +35,69 @@
         {
         background: $dark;
         color: $off-white;
-        i.icon-night-mode {transform: rotate(180deg);}
         }
 
     .buttons
         {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 100;
-        font-size: $reg;
-        i { opacity: .2; cursor: pointer; display: inline-block;}
-        i:hover { opacity: 1; }
         }
+    }
+
+.buttons
+    {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    font-size: $reg;
+    i { opacity: .2; cursor: pointer; display: inline-block;}
+    i:hover { opacity: 1; }
+    }
+
+body.night-mode .icon-night-mode
+    {
+    transform: rotate(180deg);
     }
 
 .fullscreen-enabled .app {
     border-radius: calc(1vw + 1vh);
+}
+
+.wipe-confirm {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 32, 38, 0.45);
+    text-align: center;
+
+    .panel {
+        background: $white;
+        color: $grey;
+        max-width: 440px;
+        margin: 24px;
+        padding: 28px 32px;
+        border-radius: 4px;
+    }
+
+    p {
+        margin: 0 0 20px;
+        font-family: Lato, sans-serif;
+        line-height: 1.4;
+    }
+
+    button { margin: 0 8px; }
+    button:focus {
+        outline: 2px solid $red;
+        outline-offset: 3px;
+    }
+}
+
+.app.night-mode .wipe-confirm .panel {
+    background: $dark;
+    color: $off-white;
 }
 
 
