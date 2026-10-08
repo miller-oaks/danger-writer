@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import {AppContext} from './AppContext';
+import { preservesText } from './noDelete';
 
 export default class Editor extends Component {
   constructor(props) {
@@ -9,6 +10,9 @@ export default class Editor extends Component {
     this.onStroke = this.onStroke.bind(this);
     this.clearLetter = this.clearLetter.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    this.onBeforeInput = this.onBeforeInput.bind(this);
+    this.onCut = this.onCut.bind(this);
+    this.onPaste = this.onPaste.bind(this);
     this.input = React.createRef();
     this.wrapper = React.createRef();
     this.state = {
@@ -112,13 +116,57 @@ export default class Editor extends Component {
   }
 
   onChange(event) {
-    this.setState({text: event.target.value});
+    const next = event.target.value;
+    if (this.props.noDelete && !preservesText(this.state.text, next)) return;
+    this.setState({text: next});
+  }
+
+  selectionReplaces() {
+    const input = this.input.current;
+    return input && input.selectionStart !== input.selectionEnd;
+  }
+
+  blockedEdit(event) {
+    if (!this.props.noDelete) return false;
+    const key = event.key;
+    const ctrl = event.ctrlKey || event.metaKey;
+    if (key === "Backspace" || key === "Delete") return true;
+    if (ctrl && key.toLowerCase() === "x") return true;
+    if (!this.selectionReplaces()) return false;
+    const navigation = [
+      "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+      "Shift", "Control", "Alt", "Meta", "CapsLock", "Home", "End", "Escape", "Tab",
+    ];
+    return !navigation.includes(key);
+  }
+
+  onBeforeInput(event) {
+    if (!this.props.noDelete) return;
+    const type = (event.nativeEvent && event.nativeEvent.inputType) || "";
+    if (type.indexOf("delete") === 0 || type === "deleteByCut") {
+      event.preventDefault();
+      return;
+    }
+    if (this.selectionReplaces() && type.indexOf("insert") === 0) event.preventDefault();
+  }
+
+  onCut(event) {
+    if (this.props.noDelete) event.preventDefault();
+  }
+
+  onPaste(event) {
+    if (this.props.noDelete && this.selectionReplaces()) event.preventDefault();
   }
 
   onStroke(event) {
     const key = event.key;
     const ctrl = event.ctrlKey || event.metaKey;
     const alt = event.metaKey || event.altKey;
+
+    if (this.blockedEdit(event)) {
+      event.preventDefault();
+      return;
+    }
 
     if (this.disabled_keys.includes(key)) {
       event.preventDefault();
@@ -171,6 +219,9 @@ export default class Editor extends Component {
             placeholder="Start typing..."
             spellCheck="false"
             onKeyDown={this.onStroke}
+            onBeforeInput={this.onBeforeInput}
+            onCut={this.onCut}
+            onPaste={this.onPaste}
             onChange={this.onChange}
             onScroll={this.onScroll}
             ref={this.input}

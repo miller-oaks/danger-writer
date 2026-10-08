@@ -12,6 +12,7 @@ import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { NightModeContext } from "./NightMode";
 import { readKeepLine } from "./keepLine";
+import { readNoDelete } from "./noDelete";
 
 const withFullscreenHook = (Component) => {
   return (props) => {
@@ -52,6 +53,7 @@ class WritingApp extends React.Component {
       type: type,
       hardcore: hardcore,
       keepLine: readKeepLine(),
+      noDelete: readNoDelete(),
     };
   }
 
@@ -178,7 +180,7 @@ class WritingApp extends React.Component {
   }
 
   render() {
-    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, keepLine } =
+    const { danger, won, lost, text, limit, type, hardcore, startTime, duration, keepLine, noDelete } =
       this.state;
     const { nightMode } = this.context;
     const appClass = classNames("app", {
@@ -209,6 +211,7 @@ class WritingApp extends React.Component {
                   onNightMode={this.toggleNightMode}
                   onFullScreen={this.toggleFullscreen}
                   keepLine={keepLine}
+                  noDelete={noDelete}
                 />
                 {won ? (
                   <SessionEnd
