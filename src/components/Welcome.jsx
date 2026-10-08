@@ -49,11 +49,14 @@ const Welcome = () => {
   const { nightMode } = useNightMode();
   return (
   <div className={classNames("Welcome", { "night-mode": nightMode })}>
+    <div className="welcome-bar">
+      <Link to="/help" className="navButton helpButton">
+        Help
+      </Link>
+      <DockTip />
+      <NightModeToggle />
+    </div>
     <Banner />
-    <NightModeToggle />
-    <Link to="/help" className="navButton helpButton">
-      Help
-    </Link>
     <Space xl />
     <div>
       <div className="logo">
@@ -71,7 +74,6 @@ const Welcome = () => {
       </h2>
       <Space xl />
       <WriteButton ghost color="red" />
-      <DockTip />
     </div>
     <div className="accolades" />
   </div>
