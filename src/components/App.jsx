@@ -7,6 +7,7 @@ import WordCount from "./WordCount";
 import WriteButton from "./WriteButton";
 import Failure from "./Failure";
 import Download from "./Download";
+import CopyButton from "./CopyButton";
 import Editor from "./Editor";
 import { AppContext } from "./AppContext";
 import { NightModeContext } from "./NightMode";
@@ -168,6 +169,7 @@ class WritingApp extends React.Component {
             <Progress />
             <div className="buttons">
               {won && <Download finishTime={startTime + duration} text={text} />}
+              {won && <CopyButton text={text} />}
               <i className="icon-night-mode" onClick={this.toggleNightMode}></i>
               <i
                 className="icon-fullscreen"
