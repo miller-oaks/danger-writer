@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Welcome from "./Welcome";
 import Help from "./Help";
 import WritingApp from "./App";
+import { parseHardcore } from "./hardcore";
 
 import {
   createBrowserRouter,
@@ -30,7 +31,7 @@ const App = (props) => {
   let appProps = {
     limit: parseInt(searchParams.get("limit"), 10) || 5,
     type: searchParams.get("type") || "minutes",
-    hardcore: parse(searchParams.get("hardcore")),
+    hardcore: parseHardcore(searchParams.get("hardcore")),
     nightmode: parse(searchParams.get("nightmode")),
   };
   // Setting a random key forces the component to re-mount even if
